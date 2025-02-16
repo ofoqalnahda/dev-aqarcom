@@ -1,0 +1,17 @@
+
+   INFO  Processing jobs from the [default] queue.  
+
+  2023-03-02 16:13:42 App\Jobs\SendMessageFromAdmin .............. 6.03ms FAIL
+
+   INFO  Processing jobs from the [default] queue.  
+
+
+   INFO  Processing jobs from the [default] queue.  
+
+  2023-03-02 16:15:14 App\Jobs\SendMessageFromAdmin  2023-03-02 16:16:18 App\Jobs\SendMessageFromAdmin
+   INFO  Processing jobs from the [default] queue.  
+
+  2023-03-02 17:35:04 App\Jobs\SendMessageFromAdmin
+   INFO  Processing jobs from the [default] queue.  
+
+  2023-03-02 17:36:14 App\Jobs\SendMessageFromAdmin
