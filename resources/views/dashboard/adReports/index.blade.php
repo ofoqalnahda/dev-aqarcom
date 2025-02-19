@@ -24,6 +24,7 @@
                                                 <th>@lang('ad_id')</th>
                                                 <th>@lang('reporter_name')</th>
                                                 <th>@lang('reason')</th>
+                                                <th>@lang('date')</th>
                                                 <th>@lang('control')</th>
                                             </tr>
                                             </thead>
@@ -46,6 +47,11 @@
                                                         <td >
                                                             <div class="d-flex flex-column">
                                                                 <span class="font-weight-bolder mb-25">{{$adReport->reportReason->reason}}</span>
+                                                            </div>
+                                                        </td>
+                                                        <td >
+                                                            <div class="d-flex flex-column">
+                                                                <span class="font-weight-bolder mb-25">{{ $adReport->created_at ? $adReport->created_at->format('Y-m-d h:i A'):'' }}</span>
                                                             </div>
                                                         </td>
                                                         <td>

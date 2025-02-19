@@ -38,7 +38,6 @@
                                                 <th>@lang('name')</th>
                                                 <th>@lang('email')</th>
                                                 <th>@lang('phone')</th>
-                                                <th>@lang('whatsapp')</th>
                                                 <th>@lang('code')</th>
                                                 <th>@lang('city')</th>
                                                 <th>@lang('ads_count')</th>
@@ -86,15 +85,7 @@
                                                                 <span><a href="tel:{{$user->phone}}">{{$user->phone}}</a></span>
                                                             </div>
                                                         </td>
-                                                        <td class="text-nowrap">
-                                                            <div class="d-flex">
-                                                                <a aria-label="Chat on WhatsApp" href="https://wa.me/+966{{$user->whatsapp}}">
-                                                                    <span>{{$user->whatsapp}}</span>
-                                                                    </a>
-
-                                                                
-                                                            </div>
-                                                        </td>
+                                                        
                                                         <td class="text-nowrap">
                                                             <div class="d-flex">
                                                                 <span>{{$user->code}}</span>

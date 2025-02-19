@@ -71,7 +71,7 @@
 
                                                     <td>
                                                         <div class="d-flex align-items-center">
-                                                            <span>{{__($ad->main_type)}}</span>
+                                                            <span>{{__('dash_'.$ad->main_type)}}</span>
                                                         </div>
                                                     </td>
 

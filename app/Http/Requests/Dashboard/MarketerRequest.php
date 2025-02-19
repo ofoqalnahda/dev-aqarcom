@@ -27,6 +27,7 @@ class MarketerRequest extends FormRequest
     {
 //        dd($this->discount_type);
         $rules = [
+            'user_id' => ['required', 'exists:users,id'],
             'name' => ['nullable', 'max:100'],
             'concerned_party' => ['nullable', 'max:150'],
             'email' => ['nullable', 'max:100', 'email'],

@@ -3,7 +3,10 @@
 @section('content')
 @php
         $platform= $ad->platform()->first();
-       $platform_data = json_decode($platform->data, true);
+        $platform_data=NULL;
+        if($platform){
+               $platform_data = json_decode($platform->data, true);
+        }
 
 
 @endphp
@@ -59,10 +62,12 @@
                                                     <td class="title-table">@lang('phone')</td>
                                                     <td><a href="https://wa.me/966{{$ad->user?->phone}}?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85" target="_blank">{{$ad->user?->phone}}</a></td>
                                                 </tr>
-                                                <tr>
-                                                    <td>@lang('changeStatus_date_expiry')</td>
-                                                    <td>{{$platform_data['endDate']}}</td>
-                                                </tr>
+                                                @if($platform_data)
+                                                    <tr>
+                                                        <td>@lang('changeStatus_date_expiry')</td>
+                                                        <td>{{$platform_data['endDate']}}</td>
+                                                    </tr>
+                                                @endif
                                                 <tr>
                                                     <td>@lang('estate_area')</td>
                                                     <td>{{$ad->estateArea?->name}}</td>

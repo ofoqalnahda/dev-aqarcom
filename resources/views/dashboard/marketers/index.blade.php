@@ -41,6 +41,7 @@
                                                     <th>@lang('code')</th>
                                                     <th> @lang('coupon_usage') </th>
                                                     <th> @lang('concerned_party') </th>
+                                                    <th> @lang('join at') </th>
 
 
                                                     <th>@lang('control')</th>
@@ -113,7 +114,12 @@
                                                                     class="font-weight-bolder mb-25">{{ $marketer->concerned_party }}</span>
                                                             </div>
                                                         </td>
-
+                                                        <td class="text-nowrap">
+                                                            <div class="d-flex flex-column">
+                                                                <span
+                                                                    class="font-weight-bolder mb-25">{{ $marketer->created_at ? $marketer->created_at->format('Y-m-d h:i A'):'' }}</span>
+                                                            </div>
+                                                        </td>
 
                                                         <td>
                                                             <div class="d-flex align-items-center">

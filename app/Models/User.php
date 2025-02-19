@@ -30,7 +30,13 @@ class User extends Authenticatable
     {
         return $this->hasMany(BankCalc::class , 'user_id');
     }
-
+    public function is_marketer(): bool
+    {
+        return (bool)$this->marketer;
+    }
+    public function marketer(){
+        return $this->hasOne(Marketer::class );
+    }
     public function subscription(){
         return $this->belongsToMany(Subscription::class , 'user_subscription' , 'user_id' , 'subscription_id')->withPivot([
             'id',

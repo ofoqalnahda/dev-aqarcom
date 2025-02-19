@@ -33,6 +33,24 @@
                                             <div class="col-md-6">
                                                 <div class="form-group row">
                                                     <div class="col-sm-3 col-form-label">
+                                                        <label for="user_id">@lang('user')</label>
+                                                    </div>
+                                                    <div class="col-sm-9">
+                                                        <select id="user_id" name="user_id" class="form-control"  required>
+                                                            <option value="" disabled>@lang('select_value')</option>
+                                                            @foreach ($users as $user)
+                                                                <option value="{{ $user->id }}"
+                                                                        @if ($user->id == $marketer->user_id) selected @endif>
+                                                                    {{ $user->name .' - ' .$user->phone }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group row">
+                                                    <div class="col-sm-3 col-form-label">
                                                         <label for="email-id">@lang('email')</label>
                                                     </div>
                                                     <div class="col-sm-9">
@@ -86,7 +104,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-12">
+                                            <div class="col-md-6">
                                                 <div class="form-group row">
                                                     <div class="col-sm-3 col-form-label">
                                                         <label for="code">@lang('code')</label>
@@ -123,7 +141,6 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-6"></div>
                                             <div class="col-md-6">
                                                 <div class="form-group row">
                                                     <div class="col-sm-3 col-form-label">
@@ -154,7 +171,7 @@
                                                     </div>
                                                     <div class="col-sm-9">
                                                         <input type="text" id="concerned_party" class="form-control"
-                                                            name="concerned_party" value="{{ old('concerned_party',$marketer->concerned_party) }}" required />
+                                                            name="concerned_party" value="{{ old('concerned_party',$marketer->concerned_party) }}"  />
                                                     </div>
                                                 </div>
                                             </div>

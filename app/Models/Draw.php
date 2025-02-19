@@ -11,15 +11,17 @@ class Draw extends Model
 
     protected $table = 'draws';
 
-    protected $fillable = [
-        'marketer_id',
-        'balance'
-    ];
+    protected $guarded = [];
 
     protected $hidden = [
         'created_at',
         'updated_at',
     ];
+
+    public function scopeShow($query)
+    {
+        return $query->wherein('status', ['pending','completed']);
+    }
 
     public function marketer()
     {

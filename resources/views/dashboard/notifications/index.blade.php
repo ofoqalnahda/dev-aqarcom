@@ -5,6 +5,9 @@
     td.is_read_0 {
     background-color: #0000001f;
 }
+tr {
+    border-bottom: 1px solid #000;
+}
 </style>
     <!-- BEGIN: Content-->
     <div class="app-content content ">
@@ -25,13 +28,17 @@
                                             <thead>
                                             <tr>
                                                 <th style="text-align:center">@lang('notifications')</th>
+                                                <th style="text-align:center">@lang('date')</th>
                                             </tr>
                                             </thead>
                                             <tbody>
                                                 @foreach($notifications as $notification)
-                                                    <tr>
-                                                        <td class="is_read_{{$notification->is_read}}">
+                                                    <tr class="is_read_{{$notification->is_read}}">
+                                                        <td >
                                                             <a href="{{route('dashboard.notifications.show',$notification->id)}}">{{$notification->message}}</a>
+                                                        </td>
+                                                        <td class="text-nowrap">
+                                                                <span>{{ $notification->created_at ? $notification->created_at->format('Y-m-d h:i A'):'' }}</span>
                                                         </td>
                                                     </tr>
                                                 @endforeach
