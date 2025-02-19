@@ -23,6 +23,7 @@ class AdResource extends JsonResource
             'estate_type' => $this->estateType?->name ?? "",
             'ad_type' => $this->adType?->name ?? "",
             'main_type' => __($this->main_type),
+            'main_type_ad' => $this->main_type,
             'location' => $this->location,
             'lng' => $this->lng,
             'lat' => $this->lat,

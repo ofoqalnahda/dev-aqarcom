@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Models\Marketer;
 use App\Models\Setting;
+use App\Models\User;
 use App\Models\UserSubscription;
 use App\Http\Requests\Dashboard\MarketerRequest;
 use Illuminate\Http\Request;
@@ -24,8 +25,9 @@ class MarketerController extends Controller
     public function create()
     {
         $subscriptions = Subscription::get();
+        $users = User::select('id','name','phone')->orderBy('name')->get();
 
-        return view('dashboard.marketers.create' , compact('subscriptions'));
+        return view('dashboard.marketers.create' , compact('subscriptions','users'));
     }
 
     public function store(MarketerRequest $request)
@@ -51,7 +53,9 @@ class MarketerController extends Controller
     public function edit(Marketer $marketer)
     {
         $subscriptions = Subscription::get();
-                $oldSubscriptions=[];
+        $users = User::select('id','name','phone')->orderBy('name')->get();
+
+        $oldSubscriptions=[];
         foreach($marketer->subscriptions as $subscription){
               $oldSubscriptions[$subscription->id] = [
                   'commission_percentage'=>$subscription->pivot->commission_percentage,
@@ -59,7 +63,7 @@ class MarketerController extends Controller
                   ];
         }
         
-        return view('dashboard.marketers.edit' , compact('marketer' , 'subscriptions','oldSubscriptions'));
+        return view('dashboard.marketers.edit' , compact('marketer','users' , 'subscriptions','oldSubscriptions'));
     }
 
 

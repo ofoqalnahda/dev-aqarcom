@@ -13,7 +13,9 @@ class Marketer extends Model
         'subscription_ids' => 'array',
     ];
 
-
+    public function user(){
+        return $this->hasOne(User::class , 'id' , 'user_id');
+    }
     public function draws(){
         return $this->HasMany(Draw::class , 'marketer_id');
     }

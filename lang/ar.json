@@ -1,5 +1,20 @@
 {
+    "draws_deposit_pending":"تم اضافة مكأفاه قدرها :amount ر.س قيد المراجعة ",
+    "draws_withdraw_pending":"تم تقديم طلب سحب مبلغ :amount ر.س قيد التنفيذ ",
+
+    "draws_deposit_completed":"تم تاكيد اضافة مبلغ :amount ر.س ",
+    "draws_withdraw_completed":"تم سحب مبلغ :amount ر.س ",
+
+    "Marketer_Fail": "عفوا يبدو انك لاتمتلك حساب مسوق يرجي التواصل مع الادارة",
+    "Marketer_Fail_balance": "لا يمكن اتمام الطلب المبلغ المتاح للسحب هو :amount ر.س ",
+    "Marketer_Fail_balance_min": "لا يمكن اتمام الطلب يرجي استيفاء شرط الحد الادني للسحب :amount ر.س ",
+    "Store_Withdrawal_Request_Success": "تم انشاء طلبك بنجاح شكرا لك ",
+    "have_old_Marketer_Fail_balance":"عفوا لا يمكن تقديم طلب سحب بسبب وجود طلب سحب قيد المراجعه بمبلغ :amount ر.س نقدر انتظارك شكرا لك",
+    "some_error":"حدث خطأ ما ,يرجي التواصل معنا",
+
     "user_deleted":"مستخدم محذوف",
+    "date":"التاريخ",
+    "join at":"تاريخ الانضمام",
     "concerned_party":"طرف العلاقة",
     "eror_nfaz": "هناك مشكلة متعلقة بشركة نفاذ وجاري العمل عليها يرجي المحاولة لاحقا",
     "changeStatus expiry": "ايقاف الاعلانات المنتهيه",
@@ -143,6 +158,8 @@
     "wrong_credentials": "خطأ في رقم الهاتف أو كلمة المرور",
     "sell": "معروض",
     "buy": "مطلوب",
+    "dash_sell": "معروض",
+    "dash_buy": "مطلوب",
 
 
     "city_id": "المدينة",
@@ -291,7 +308,6 @@
     "subscription_name": "إسم الباقة",
     "payment_id": "رقم عملية الدفع",
     "user_id": "رقم العميل",
-    "date": "التاريخ",
     "verified_successfully": "تم ارسال طلب التوثيق بنجاح",
     "website_data": "معلومات عن الموقع",
     "balance": "الرصيد",

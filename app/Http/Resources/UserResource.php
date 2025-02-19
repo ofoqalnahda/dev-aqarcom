@@ -20,6 +20,7 @@ class UserResource extends JsonResource
             'phone' => ltrim($this->phone, '0'),
             'whatsapp' => ltrim($this->whatsapp, '0'),
             'code' =>'',
+            'is_marketer' =>$this->is_marketer(),
             'image' => get_file($this->image),
             'is_verified' => (int) $this->is_verified,
             'is_nafath_verified' => (int) $this->is_nafath_verified,
