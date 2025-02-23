@@ -41,7 +41,7 @@
                                                         <select id="user_id" name="user_id" class="form-control"  required>
                                                             <option value="" disabled selected>@lang('select_value')</option>
                                                             @foreach ($users as $user)
-                                                                <option value="{{ $user->id }}" >
+                                                                <option value="{{ $user->id }}" @if($marketer->user_id == $user->id) @endif >
                                                                     {{ $user->name .' - ' .$user->phone }}
                                                                 </option>
                                                             @endforeach
