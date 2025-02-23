@@ -155,7 +155,6 @@ class MarketerController extends Controller
 
         $code=null;
         if($request->name){
-
             $firstChar=  $this->getFirstLetter($request->name);
             $code=$this->generateCode($firstChar);
         }

@@ -275,11 +275,7 @@
                 });
             </script>
             <script>
-                // $(document).ready(function() {
-                //     console.log("jQuery version:", $.fn.jquery);
-                //     console.log("Select2 exists?", typeof $.fn.select2);
-                //     $('#user_id').select2();
-                // });
+
                 $(document).on('change', '#first-name', function() {
                     let name= $('#first-name').val();
                     getCode(name);
@@ -341,24 +337,20 @@
             const selectedOptions = Array.from(selectElement.selectedOptions);
             const existingRows = Array.from(tableBody.querySelectorAll('tr'));
 
-            // تحويل الصفوف الحالية إلى خريطة للوصول السريع
             const existingMap = new Map();
             existingRows.forEach(row => {
                 const optionId = row.dataset.id;
                 existingMap.set(optionId, row);
             });
 
-            // عرض الجدول إذا تم اختيار أي خيارات
             if (selectedOptions.length > 0) {
                 table.style.display = ''; 
             } else {
                 table.style.display = 'none';
             }
 
-            // تحديث الصفوف بناءً على الاختيارات الجديدة
             selectedOptions.forEach(option => {
                 if (!existingMap.has(option.value)) {
-                    // إذا لم يكن الخيار موجودًا، أضف صفًا جديدًا
                     const row = document.createElement('tr');
                     row.dataset.id = option.value;
                     row.innerHTML = `
@@ -374,7 +366,6 @@
                 }
             });
 
-            // إزالة الصفوف التي لم تعد موجودة في الخيارات المحددة
             existingRows.forEach(row => {
                 if (!selectedOptions.some(option => option.value === row.dataset.id)) {
                     row.remove();

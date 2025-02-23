@@ -1,17 +1,16 @@
 @extends('dashboard.layouts.app')
-
+@section('styles')
+    <style>
+        tr.is_read_0 {
+            background-color: #00000026;
+        }
+        tr {
+            border-bottom: 1px solid #000;
+        }
+    </style>
+@endsection
 @section('content')
-<style>
-    td.is_read_0 {
-        background-color: #0000001f;
-    }
-    tr.is_read_0 {
-        background-color: #00000026;
-    }
-tr {
-    border-bottom: 1px solid #000;
-}
-</style>
+
     <!-- BEGIN: Content-->
     <div class="app-content content ">
         <div class="content-overlay"></div>
