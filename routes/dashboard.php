@@ -47,6 +47,9 @@ Route::group(['middleware' =>[ 'auth:admin' ,'check-permission']], function () {
     Route::get('subscriptions/changeStatus/{subscription}', [\App\Http\Controllers\Dashboard\SubscriptionController::class, 'changeStatus'])->name('subscriptions.changeStatus');
     Route::resource('subscriptions', \App\Http\Controllers\Dashboard\SubscriptionController::class)->except(['show']);
     Route::resource('properties', \App\Http\Controllers\Dashboard\PropertyController::class)->except(['show']);
+    Route::get('marketers/get-code',  [\App\Http\Controllers\Dashboard\MarketerController::class, 'getCode'])->name('marketers.getCode');
+    Route::get('marketers/get-data',  [\App\Http\Controllers\Dashboard\MarketerController::class, 'getData'])->name('marketers.getData');
+
     Route::resource('marketers', \App\Http\Controllers\Dashboard\MarketerController::class);
     Route::get('marketers/draws/{marketer}', [\App\Http\Controllers\Dashboard\MarketerController::class, 'draws'])->name('marketers.draws');
     Route::get('marketers/clear-balance/{marketer}', [\App\Http\Controllers\Dashboard\MarketerController::class, 'clearBalance'])->name('marketers.clear');

@@ -1,5 +1,17 @@
 @extends('dashboard.layouts.app')
+@section('styles')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+<style>
+    span.select2-selection__arrow {
+        display: none;
+    }
+    span.select2-selection__clear {
+        display: none;
+    }
+</style>
+@endsection
 @section('content')
     <!-- BEGIN: Content-->
     <div class="app-content content ">
@@ -20,17 +32,7 @@
                                         method="POST" enctype="multipart/form-data">
                                         @csrf
                                         <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group row">
-                                                    <div class="col-sm-3 col-form-label">
-                                                        <label for="first-name">@lang('name')</label>
-                                                    </div>
-                                                    <div class="col-sm-9">
-                                                        <input type="text" id="first-name" class="form-control"
-                                                            name="name" value="{{ old('name') }}" />
-                                                    </div>
-                                                </div>
-                                            </div>
+
                                             <div class="col-md-6">
                                                 <div class="form-group row">
                                                     <div class="col-sm-3 col-form-label">
@@ -38,13 +40,24 @@
                                                     </div>
                                                     <div class="col-sm-9">
                                                         <select id="user_id" name="user_id" class="form-control"  required>
-                                                            <option value="" disabled>@lang('select_value')</option>
+                                                            <option value="" disabled selected>@lang('select_value')</option>
                                                             @foreach ($users as $user)
                                                                 <option value="{{ $user->id }}" >
                                                                     {{ $user->name .' - ' .$user->phone }}
                                                                 </option>
                                                             @endforeach
                                                         </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group row">
+                                                    <div class="col-sm-3 col-form-label">
+                                                        <label for="first-name">@lang('name')</label>
+                                                    </div>
+                                                    <div class="col-sm-9">
+                                                        <input type="text" id="first-name" class="form-control"
+                                                               name="name" value="{{ old('name') }}" />
                                                     </div>
                                                 </div>
                                             </div>
@@ -65,7 +78,7 @@
                                                         <label for="first-name">@lang('phone')</label>
                                                     </div>
                                                     <div class="col-sm-9">
-                                                        <input type="text" class="form-control" name="phone"
+                                                        <input type="text" class="form-control"id="phone"  name="phone"
                                                             value="{{ old('phone') }}" />
                                                     </div>
                                                 </div>
@@ -254,7 +267,71 @@
     <!-- END: Content-->
     
         @push('scripts')
+            <!-- Select2 -->
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
             <script>
+                $("#user_id").select2({
+                    allowClear: true
+                });
+            </script>
+            <script>
+                // $(document).ready(function() {
+                //     console.log("jQuery version:", $.fn.jquery);
+                //     console.log("Select2 exists?", typeof $.fn.select2);
+                //     $('#user_id').select2();
+                // });
+                $(document).on('change', '#first-name', function() {
+                    let name= $('#first-name').val();
+                    getCode(name);
+                });
+                $(document).on('change', '#user_id', function() {
+                   let user_id= $('#user_id').val();
+                    $.ajax({
+                        method: "get",
+                        url: "{{route('dashboard.marketers.getData')}}",
+                        data: {
+                            user_id: user_id
+                        },
+                        success: function (result) {
+                            if (result.success) {
+                                $('#first-name').val(result.data.name);
+                                $('#phone').val(result.data.phone);
+                                $('#email-id').val(result.data.email);
+                                getCode(result.data.name);
+                            } else {
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "Oops...",
+                                    text: result.text,
+                                });
+                                console.log(result);
+                            }
+
+
+                        },
+                    });
+                });
+
+                function getCode(name) {
+
+                    $.ajax({
+                        method: "get",
+                        url: "{{route('dashboard.marketers.getCode')}}",
+                        data: {
+                            name: name,
+                        },
+                        success: function (result) {
+                            if (result.success) {
+                                $('#code').val(result.data.code);
+                            } else {
+                                console.log(result);
+                            }
+
+
+                        },
+                    });
+
+                }
     document.addEventListener('DOMContentLoaded', function () {
         const selectElement = document.getElementById('subscriptions-select');
         const table = document.getElementById('subscriptions-table');

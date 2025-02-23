@@ -11,6 +11,8 @@ use App\Http\Requests\Dashboard\MarketerRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\OTPController;
 use App\Models\Subscription;
+use Illuminate\Support\Str;
+use Transliterator;
 
 class MarketerController extends Controller
 {
@@ -92,7 +94,22 @@ class MarketerController extends Controller
     public function draws(Marketer $marketer){
         $draws = $marketer->draws;
         $subscriptionRequests =$marketer->transactions()->wherehas('user')->get();
-        return view('dashboard.marketers.draws' , compact('draws' , 'subscriptionRequests'));
+
+        $marketer=$marketer->select([
+                'marketers.*',
+                \DB::raw("(SELECT COUNT(*) FROM marketer_transactions WHERE marketer_transactions.marketer_id = marketers.id) AS transactions_count"),
+                \DB::raw("(SELECT COALESCE(SUM(amount), 0) FROM draws WHERE draws.marketer_id = marketers.id AND transaction_type = 'deposit' AND status = 'pending') AS total_deposits_pending"),
+                \DB::raw("(SELECT COALESCE(SUM(amount), 0) FROM draws WHERE draws.marketer_id = marketers.id AND transaction_type = 'deposit' AND status = 'completed') AS total_deposits"),
+            \DB::raw("(SELECT COALESCE(SUM(amount), 0) FROM draws WHERE draws.marketer_id = marketers.id AND transaction_type = 'withdraw' AND status = 'pending') AS total_withdrawals_pending"),
+            \DB::raw("(SELECT COALESCE(SUM(amount), 0) FROM draws WHERE draws.marketer_id = marketers.id AND transaction_type = 'withdraw' AND status = 'completed') AS total_withdrawals"),
+                \DB::raw("( 
+                    (SELECT COALESCE(SUM(amount), 0) FROM draws WHERE draws.marketer_id = marketers.id AND transaction_type = 'deposit' AND status = 'completed') 
+                    - 
+                    (SELECT COALESCE(SUM(amount), 0) FROM draws WHERE draws.marketer_id = marketers.id AND transaction_type = 'withdraw' AND status = 'completed')
+                ) AS balance")
+            ])
+            ->first();
+        return view('dashboard.marketers.draws' , compact('draws' ,'marketer', 'subscriptionRequests'));
     }
 
     public function clearBalance(Marketer $marketer){
@@ -131,4 +148,70 @@ class MarketerController extends Controller
         $marketer->delete();
         return response()->json();
     }
+    public function getCode( Request $request)
+    {
+
+
+
+        $code=null;
+        if($request->name){
+
+            $firstChar=  $this->getFirstLetter($request->name);
+            $code=$this->generateCode($firstChar);
+        }
+        return [
+            'success' => true,
+            'data' => [
+                'code'=>$code,
+            ]
+        ];
+    }
+
+    public function getData( Request $request)
+    {
+
+        if(Marketer::where('user_id',$request->user_id)->exists()){
+            return [
+                'success' => false,
+                'text' => __('error_marketer_exits')
+            ];
+        }
+        $user=User::whereId($request->user_id)->first();
+
+        if(!$user){
+            return [
+                'success' => false,
+                'text' => __('error_user_not_found')
+            ];
+        }
+
+        return [
+            'success' => true,
+            'data' => [
+                'name'=>$user->name,
+                'phone'=>$user->phone,
+                'email'=>$user->email,
+            ]
+        ];
+    }
+    function generateCode($Letter)
+    {
+        $lastCode = Marketer::where('code', 'LIKE', $Letter . '%')
+            ->whereRaw("LENGTH(code) = 4")
+            ->whereRaw("code REGEXP '^[A-Z][0-9]{3}$'")
+            ->orderBy('code', 'desc')
+            ->value('code');
+        if ($lastCode) {
+            $number = (int) substr($lastCode, 1) + 1;
+        } else {
+            $number = 1;
+        }
+        return $Letter . str_pad($number, 3, '0', STR_PAD_LEFT);
+    }
+
+    function getFirstLetter($name) {
+        $name = Str::slug($name);
+        return strtoupper(mb_substr($name, 0, 1, "UTF-8"));
+    }
+
 }

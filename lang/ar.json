@@ -4,6 +4,18 @@
 
     "draws_deposit_completed":"تم تاكيد اضافة مبلغ :amount ر.س ",
     "draws_withdraw_completed":"تم سحب مبلغ :amount ر.س ",
+    "error_marketer_exits":"تم تخصيص هذا المستخدم لمسوق من قبل",
+    "error_user_not_found":"المستخد غير موجود",
+    "type":"نوع المعاملة",
+    "transaction_id":"رقم الاشتراك",
+    "total_withdrawals":"اجمالي المسحوبات",
+    "total_withdrawals_pending":"اجمالي طلبات السحب",
+    "total_deposits_pending":"رصيد معلق",
+    "withdraw":"سحب",
+    "deposit":"ربح",
+    "RS":"ر.س",
+    "completed":"مكتملة",
+    "pending":"قيد المراجعه",
 
     "Marketer_Fail": "عفوا يبدو انك لاتمتلك حساب مسوق يرجي التواصل مع الادارة",
     "Marketer_Fail_balance": "لا يمكن اتمام الطلب المبلغ المتاح للسحب هو :amount ر.س ",
@@ -193,7 +205,7 @@
 
     "reply": "رد",
     "edit": "تعديل",
-    "draws": "التصفيات",
+    "draws": "المعاملات",
     "amount": "المبلغ",
     "delete": "حذف",
     "name": "الإسم",
