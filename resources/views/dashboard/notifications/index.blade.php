@@ -3,8 +3,11 @@
 @section('content')
 <style>
     td.is_read_0 {
-    background-color: #0000001f;
-}
+        background-color: #0000001f;
+    }
+    tr.is_read_0 {
+        background-color: #00000026;
+    }
 tr {
     border-bottom: 1px solid #000;
 }
