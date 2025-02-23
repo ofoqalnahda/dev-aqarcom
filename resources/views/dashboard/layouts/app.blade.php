@@ -72,6 +72,8 @@
     {{--noty--}}
     <link rel="stylesheet" href="{{ asset('website/css/noty.css') }}">
     <script src="{{ asset('website/javascript/noty.min.js') }}"></script>
+
+
     <style>
         body{
             font-family: 'Calibri' , sans-serif !important;
@@ -111,6 +113,7 @@
             text-align: right !important;
         }
     </style>
+    @yield('styles')
 </head>
 <!-- END: Head-->
 
@@ -162,6 +165,14 @@
 
     $(document).ready(function () {
         $('#datatable-table').DataTable({
+            "language": {
+                "url": "{{asset('dashboard_files')}}/app-assets/DataTables-1.13.1/translations/{{app()->getLocale()}}.json"
+            },
+            "aaSorting": [],
+        });
+    });
+    $(document).ready(function () {
+        $('#datatable-table2').DataTable({
             "language": {
                 "url": "{{asset('dashboard_files')}}/app-assets/DataTables-1.13.1/translations/{{app()->getLocale()}}.json"
             },

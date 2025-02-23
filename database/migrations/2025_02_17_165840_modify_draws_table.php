@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::table('draws', function (Blueprint $table) {
             $table->dropColumn('balance');
+            $table->foreignId('transaction_id')->nullable()->after('id')
+                ->constrained('marketer_transactions')->cascadeOnDelete()->cascadeOnUpdate();
             $table->double('amount', 8, 2)->after('marketer_id');
             $table->enum('transaction_type', ['deposit', 'withdraw'])->after('marketer_id');
             $table->enum('status', ['pending', 'completed', 'failed'])->default('pending')->after('transaction_type');

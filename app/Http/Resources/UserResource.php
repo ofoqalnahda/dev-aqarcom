@@ -12,6 +12,7 @@ class UserResource extends JsonResource
 //        dd($this->id,auth('api')->id(),$this->followers->where('pivot.follower_id', auth('api')->id())->count());
 //        $subscription = $this->subscription->where('pivot.is_active', 1)->first();
 //        $this->load('followers');
+
         return [
             'id' => $this->id,
             'token' => $this->token ?? "",

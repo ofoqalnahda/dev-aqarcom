@@ -26,7 +26,7 @@
                                                         </div>
                                                         <div class="d-flex flex-wrap">
                                                             @can('marketers-edit')
-                                                            <a class="btn btn-outline btn-primary m-1" href="{{route('dashboard.marketers.edit' , $marketer->id)}}" >@lang('actions')</a>
+                                                            <a class="btn btn-outline btn-primary m-1" href="{{route('dashboard.marketers.draws' , $marketer->id)}}" >@lang('actions')</a>
                                                             @endcan
                                                             @can('marketers-destroy')
                                                             <form action="{{route('dashboard.marketers.destroy' , $marketer->id)}}" method="post">
