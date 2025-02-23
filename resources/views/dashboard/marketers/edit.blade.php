@@ -39,9 +39,9 @@
                                                     </div>
                                                     <div class="col-sm-9">
                                                         <select id="user_id" name="user_id" class="form-control"  required>
-                                                            <option value="" disabled selected>@lang('select_value')</option>
+                                                            <option value="" disabled @if(!$marketer->user_id) selected @endif>@lang('select_value')</option>
                                                             @foreach ($users as $user)
-                                                                <option value="{{ $user->id }}" @if($marketer->user_id == $user->id) @endif >
+                                                                <option value="{{ $user->id }}" @if($marketer->user_id == $user->id) selected @endif >
                                                                     {{ $user->name .' - ' .$user->phone }}
                                                                 </option>
                                                             @endforeach
