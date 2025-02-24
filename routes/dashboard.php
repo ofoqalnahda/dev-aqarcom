@@ -49,6 +49,8 @@ Route::group(['middleware' =>[ 'auth:admin' ,'check-permission']], function () {
     Route::resource('properties', \App\Http\Controllers\Dashboard\PropertyController::class)->except(['show']);
     Route::get('marketers/get-code',  [\App\Http\Controllers\Dashboard\MarketerController::class, 'getCode'])->name('marketers.getCode');
     Route::get('marketers/get-data',  [\App\Http\Controllers\Dashboard\MarketerController::class, 'getData'])->name('marketers.getData');
+    Route::get('marketers/send-money/{transaction_id}',  [\App\Http\Controllers\Dashboard\MarketerController::class, 'sendMoney'])->name('marketers.sendMoney');
+    Route::get('marketers/send-withdraw-money/{draw_id}',  [\App\Http\Controllers\Dashboard\MarketerController::class, 'sendWithdrawMoney'])->name('marketers.sendWithdrawMoney');
 
     Route::resource('marketers', \App\Http\Controllers\Dashboard\MarketerController::class);
     Route::get('marketers/draws/{marketer}', [\App\Http\Controllers\Dashboard\MarketerController::class, 'draws'])->name('marketers.draws');

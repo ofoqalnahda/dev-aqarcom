@@ -1,4 +1,4 @@
-@if (session('error'))
+@if ($errors->any())
     <script>
         $(".loader-container").css("display", "none");
     </script>
@@ -6,7 +6,7 @@
         new Noty({
             type: 'error',
             layout: 'topRight',
-            text: "{{ session('error') }}",
+            text: "{{ $errors->first() }}",
             timeout: 2000,
             killer: true
         }).show();

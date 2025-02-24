@@ -6,6 +6,7 @@
     "required": "Required",
     "is_val_required": "Is Val Required",
     "service_required_val_license": "Service Required Val License",
+    "Sorry, this package is not suitable for your account type": "Sorry, this package is not suitable for your account type. Please choose a package that matches your account type, whether it is a business or an individual account.",
 
     "discount_type": "Discount Type",
     "discount_fixed": "Fixed Discount",

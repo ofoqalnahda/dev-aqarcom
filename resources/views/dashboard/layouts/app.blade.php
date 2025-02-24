@@ -140,6 +140,7 @@
 <!-- END: Footer-->
 
 @include('partials.errorAlert')
+@include('partials.errorAlertMSG')
 @include('partials.successAlert')
 <!-- BEGIN: Vendor JS-->
 
