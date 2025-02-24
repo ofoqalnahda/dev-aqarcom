@@ -50,10 +50,12 @@ class Marketer extends Model
     {
        $discount_percentage= $this->discount_percentage;
         if(request('subscription_id')){
-          $subscription=  $this->subscriptions()->where('subscriptions.id',request('subscription_id'))->first();
+          $subscription=  $this->subscriptions()
+              ->where('subscriptions.id',request('subscription_id'))
+              ->first();
+
            $discount_percentage= $subscription?$subscription->pivot->discount_percentage:$this->discount_percentage;
         }
-       
         if ($this->discount_type == "fixed") {
             return $discount_percentage;
         } else {

@@ -75,6 +75,12 @@
         font-size: 15px;
         font-weight: 700;
     }
+   td  .btn-primary {
+        border-color: #7367F0 !important;
+        border: 1px solid;
+        background-color: #88869542 !important;
+        color: #7367F0 !important;
+    }
 </style>
 @endsection
 @section('content')
@@ -144,9 +150,12 @@
                                             <tr>
                                                 <th>#</th>
                                                 <th>@lang('user_name')</th>
+                                                <th>@lang('ads_count')</th>
                                                 <th>@lang('subscription_name')</th>
                                                 <th>@lang('price')</th>
                                                 <th>@lang('date')</th>
+                                                <th>@lang('action')</th>
+
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -163,6 +172,9 @@
                                                             @endcan
                                                         </td>
                                                         <td>
+                                                            {{$subscriptionRequest->user->ads_count}}
+                                                        </td>
+                                                        <td>
                                                             <div class="d-flex align-items-center">
                                                                 <span>{{$subscriptionRequest->subscription->name}}</span>
                                                             </div>
@@ -176,8 +188,17 @@
 
                                                         <td class="text-wrap">
                                                             <div class="d-flex flex-column">
-                                                                <span class="font-weight-bolder mb-25">{{$subscriptionRequest->created_at->format('Y-m-d')}}</span>
+                                                                <span class="font-weight-bolder mb-25">{{ $subscriptionRequest->created_at->diffForHumans() }}</span>
                                                             </div>
+                                                        </td>
+                                                        <td class="text-wrap">
+
+                                                            @can('marketers-draws')
+                                                                @if(!$subscriptionRequest->is_deserved)
+                                                                    <a href="{{ route('dashboard.marketers.sendMoney', $subscriptionRequest->id) }}"
+                                                                       class="btn-sm btn-primary m-1" title="{{__('marketers_send_money')}}"><i class="fa-solid fa-money-bill-transfer"></i></a>
+                                                                @endif
+                                                            @endcan
                                                         </td>
                                                     </tr>
                                                 @endforeach
@@ -217,6 +238,8 @@
                                                 <th>@lang('type')</th>
                                                 <th>@lang('status')</th>
                                                 <th>@lang('amount')</th>
+                                                <th>@lang('account_name')</th>
+                                                <th>@lang('account_number')</th>
                                                 <th>@lang('date')</th>
                                                 <th>@lang('action')</th>
 
@@ -247,13 +270,28 @@
                                                                 <span class="font-weight-bolder mb-25">{{number_format($draw->amount,2)}} @lang('sar')</span>
                                                             </div>
                                                         </td>
+                                                        <td class="text-nowrap">
+                                                            <div class="d-flex flex-column">
+                                                                <span class="font-weight-bolder mb-25">{{$draw->name}}</span>
+                                                            </div>
+                                                        </td>
+                                                        <td class="text-nowrap">
+                                                            <div class="d-flex flex-column">
+                                                                <span class="font-weight-bolder mb-25">{{$draw->account_number}}</span>
+                                                            </div>
+                                                        </td>
                                                         <td>
                                                             <div class="d-flex align-items-center">
                                                                 <span>{{$draw->created_at->format('Y/m/d')}}</span>
                                                             </div>
                                                         </td>
                                                         <td>
-
+                                                            @can('marketers-draws')
+                                                                @if($draw->status == "pending" && $draw->transaction_type == "withdraw")
+                                                                    <a href="{{ route('dashboard.marketers.sendWithdrawMoney', $draw->id) }}"
+                                                                       class="btn-sm btn-primary m-1" title="{{__('done_draw')}}"><i class="fa-solid fa-hand-holding-dollar"></i></a>
+                                                                @endif
+                                                            @endcan
                                                         </td>
                                                     </tr>
                                                 @endforeach

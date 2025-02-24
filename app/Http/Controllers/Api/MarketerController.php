@@ -134,6 +134,8 @@ class MarketerController extends Controller
                 'marketer_id' => $Marketer->id,
                 'amount' => $request->amount,
                 'status' => 'pending',
+                'name' => $request->name,
+                'account_number' => $request->account_number,
                 'transaction_type' => 'withdraw',
             ]);
             FaDB::commit();

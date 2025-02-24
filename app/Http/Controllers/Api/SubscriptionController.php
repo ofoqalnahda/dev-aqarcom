@@ -8,6 +8,7 @@ use App\Http\Requests\Api\StoreSubscriptionRequest;
 use App\Http\Requests\Api\UpdateSubscriptionRequest;
 use App\Http\Resources\SubscriptionResource;
 use App\Models\Coupon;
+use App\Models\Draw;
 use App\Models\Marketer;
 use App\Models\Setting;
 use App\Models\Subscription;
@@ -41,11 +42,17 @@ class SubscriptionController extends Controller
         $oldSubscription = auth()->user()->subscription()->first();
         $user = auth()->user();
 
+
+
         // User Has pending Subscription ....
         if ($oldSubscription && !$oldSubscription->pivot->is_active) {
             return $this->failedResponse(__('has_pending_subscription'));
         }
-                $subscription = Subscription::find($request->subscription_id);
+        $subscription = Subscription::find($request->subscription_id);
+        //This user type is not compatible with the package  Subscription ....
+        if (($subscription->premium && !in_array($user->identity_type,[2,3])) || (!$subscription->premium && !in_array($user->identity_type,[1])) ) {
+            return $this->failedResponse(__('Sorry, this package is not suitable for your account type'));
+        }
        $oldSubscriptionThis= auth()->user()->subscription()->where('subscription_id',$subscription->id)->first();
         if($oldSubscriptionThis && $oldSubscriptionThis->end_date <  Carbon::now()){
             return $this->failedResponse(__('You are already subscribed to this package'));
@@ -79,15 +86,24 @@ class SubscriptionController extends Controller
             $subscriptionData['is_active'] = 1;
             $subscriptionData['payment_id'] =null;
             auth()->user()->subscription()->sync([$subscription->id => $subscriptionData]);
-          if($marketer){
-              MarketerTransaction::create([
-                  'user_id'=>auth()->user()->id,
-                  'marketer_id'=>$marketer->id,
-                  'subscription_id'=>$subscription->id,
-                  'payment_id'=>null,
-                  'amount'=>$price
-                  ]);
-          }
+            if($marketer && $marketer->user_id != auth()->user()->id && !MarketerTransaction::where('user_id',auth()->user()->id)->exists()){
+                $amount=$subscription->premium?10:5;
+                $transaction=  MarketerTransaction::create([
+                    'user_id'=>auth()->user()->id,
+                    'marketer_id'=>$marketer->id,
+                    'subscription_id'=>$subscription->id,
+                    'is_deserved'=>0,
+                    'payment_id'=>null,
+                    'amount'=>$amount
+                ]);
+                Draw::create([
+                    'transaction_id'=>$transaction->id,
+                    'marketer_id'=>$marketer->id,
+                    'transaction_type'=>'deposit',
+                    'amount'=>$amount,
+                    'status'=>'pending',
+                ]);
+            }
             return $this->successResponse(__('subscribe_successfully'),data: [
                 'url' => null,
             ]);
@@ -104,15 +120,25 @@ class SubscriptionController extends Controller
             if ($coupon instanceof Coupon) {
                 $coupon->burn();
             }
-        if($marketer){
-              MarketerTransaction::create([
-                  'user_id'=>auth()->user()->id,
-                  'marketer_id'=>$marketer->id,
-                  'subscription_id'=>$subscription->id,
-                  'payment_id'=>$subscriptionData['payment_id'],
-                  'amount'=>$price
-                  ]);
-          }
+
+            if($marketer && $marketer->user_id != auth()->user()->id && !MarketerTransaction::where('user_id',auth()->user()->id)->exists()){
+                $amount=$subscription->premium?10:5;//get price by prc
+                $transaction=  MarketerTransaction::create([
+                    'user_id'=>auth()->user()->id,
+                    'marketer_id'=>$marketer->id,
+                    'subscription_id'=>$subscription->id,
+                    'is_deserved'=>0,
+                    'payment_id'=>$subscriptionData['payment_id'],
+                    'amount'=>$amount
+                ]);
+                Draw::create([
+                    'transaction_id'=>$transaction->id,
+                    'marketer_id'=>$marketer->id,
+                    'transaction_type'=>'deposit',
+                    'amount'=>$amount,
+                    'status'=>'pending',
+                ]);
+            }
             $message = "يوجد طلب اشتراك جديد من العميل رقم : " . $user->id . " في " . $subscription->name;
             \App\Services\AdminNotification::create($message, route('dashboard.subscriptionRequests.index'));
 
@@ -247,11 +273,16 @@ class SubscriptionController extends Controller
         $oldSubscription = auth()->user()->subscription()->first();
         $user = auth()->user();
         $subscription = Subscription::find($request->subscription_id);
+        //This user type is not compatible with the package  Subscription ....
+        if (($subscription->premium && !in_array($user->identity_type,[2,3])) || (!$subscription->premium && !in_array($user->identity_type,[1])) ) {
+            return $this->failedResponse(__('Sorry, this package is not suitable for your account type'));
+        }
         $price=$subscription->price;
         $coupon = $request->coupon;
         $marketer=null;
         if ($coupon) {
-            $marketer = Marketer::where('code', $coupon)->whereJsonContains('subscription_ids', (string) $subscription->id)
+            $marketer = Marketer::where('code', $coupon)
+                ->whereJsonContains('subscription_ids', (string) $subscription->id)
                 ->first();
             if ($marketer) {
                 $price = $marketer->new_price($price);
@@ -265,9 +296,11 @@ class SubscriptionController extends Controller
         if($price > 0){
             return $this->failedResponse(__('This ad is not free. Please make a payment to proceed'));
         }
+
         if(auth()->user()->subscription()->where('subscription_id',$subscription->id)->first()){
             return $this->failedResponse(__('You are already subscribed to this package'));
         }
+
         $subscriptionData['regular_ads'] = $subscription->regular_ads + (int) $oldSubscription?->pivot?->regular_ads;
         $subscriptionData['special_ads'] = $subscription->special_ads + (int) $oldSubscription?->pivot?->special_ads;
         $subscriptionData['end_date'] = Carbon::now()->addDays($subscription->duration);
@@ -275,15 +308,25 @@ class SubscriptionController extends Controller
         $subscriptionData['price'] = 0;
         $subscriptionData['is_active'] = 1;
         $subscriptionData['payment_id'] =null;
+
         auth()->user()->subscription()->sync([$subscription->id => $subscriptionData]);
-          if($marketer){
-              MarketerTransaction::create([
+          if($marketer && $marketer->user_id != auth()->user()->id && !MarketerTransaction::where('user_id',auth()->user()->id)->exists()){
+              $amount=$subscription->premium?10:5;
+              $transaction=  MarketerTransaction::create([
                   'user_id'=>auth()->user()->id,
                   'marketer_id'=>$marketer->id,
                   'subscription_id'=>$subscription->id,
+                  'is_deserved'=>0,
                   'payment_id'=>null,
-                  'amount'=>0
-                  ]);
+                  'amount'=>$amount
+              ]);
+              Draw::create([
+                  'transaction_id'=>$transaction->id,
+                  'marketer_id'=>$marketer->id,
+                  'transaction_type'=>'deposit',
+                  'amount'=>$amount,
+                  'status'=>'pending',
+              ]);
           }
         return $this->successResponse(__('subscribe_successfully'));
     }
