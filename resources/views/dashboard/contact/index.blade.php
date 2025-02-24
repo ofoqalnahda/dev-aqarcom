@@ -99,7 +99,7 @@
                                                                 <i class="fa-solid fa-comment"></i>
                                                             </a>
                                                             @endif
-                                                            <a class="btn btn-outline-success item-action" href="https://api.whatsapp.com/send?phone={{$message->phone}}">
+                                                            <a class="btn btn-outline-success item-action" href="https://api.whatsapp.com/send?phone=966{{ ltrim($message->whatsapp, '0')}}">
                                                                 <i class="fa-brands fa-whatsapp"></i>
                                                             </a>
                                                             <a class="btn btn-outline-info item-action" href="tel:{{$message->phone}}">
