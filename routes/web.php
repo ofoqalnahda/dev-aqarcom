@@ -18,7 +18,6 @@ use Illuminate\Support\Facades\Route;
  */
 
 Route::get('optimize', function () {
-    dd(get_file(''));
     Artisan::call('optimize:clear');
     return 'Cleared';
 });

@@ -16,6 +16,7 @@ class ChatCollection extends ResourceCollection
                     'title' => $chat->title??$chat->sender->name,
                     'user_id'   =>$chat->user_id,
                     'receiver_id'   =>$receiver->id,
+                    'count_unread'   =>$chat->count_unread,
                     'messages'   =>MessageResource::collection($chat->messages),
                     'receiver' => UserResource::make($receiver),
                 ];
