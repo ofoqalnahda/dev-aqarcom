@@ -21,7 +21,7 @@ class ChatController extends Controller
             $q->where('user_id' , auth()->id())->orWhere('receiver_id' , auth()->id());
         } )->with('messages')
             ->withcount(['messages as count_unread'=>function ($q){
-            $q->where('is_read' , 0);
+            $q->where('is_read' , 0)->where('receiver_id' , auth()->id());
         }])
             ->paginate(15);
 
@@ -88,7 +88,7 @@ class ChatController extends Controller
         ])
             ->first();
         $messages=$chat->messages;
-        $chat->messages()->update(['is_read' => 1]);
+        $chat->messages()->where('receiver_id',auth()->id())->update(['is_read' => 1]);
 
         if(!$chat || !$messages)
             return $this->successResponse(data:[]);
