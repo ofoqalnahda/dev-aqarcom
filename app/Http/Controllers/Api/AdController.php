@@ -113,11 +113,11 @@ class AdController extends Controller
     {
         
        $user= auth()->user();
-        if ($request->is_story == 1) {
-            if (auth()->user()->subscription()->wherePivot('is_active', 1)->first()?->id != 9 && auth()->user()->ads()->where('is_story', 1)->count() > 0) {
-                return $this->failedResponse(__('no_story_available_for_this_user'));
-            }
-        }
+//        if ($request->is_story == 1) {
+//            if (auth()->user()->subscription()->wherePivot('is_active', 1)->first()?->id != 9 && auth()->user()->ads()->where('is_story', 1)->count() > 0) {
+//                return $this->failedResponse(__('no_story_available_for_this_user'));
+//            }
+//        }
 
         $adData = $request->safe()->except(['attachment', 'options']);
 
@@ -138,11 +138,11 @@ class AdController extends Controller
     {
         
        $user= auth('api')->user();
-        if ($request->is_story == 1) {
-            // if (auth()->user()->subscription()->wherePivot('is_active', 1)->first()?->id != 9 && auth()->user()->ads()->where('is_story', 1)->count() > 0) {
-                return $this->failedResponse(__('no_story_available_for_this_user'));
-            // }
-        }
+//        if ($request->is_story == 1) {
+//             if (auth()->user()->subscription()->wherePivot('is_active', 1)->first()?->id != 9 && auth()->user()->ads()->where('is_story', 1)->count() > 0) {
+//                return $this->failedResponse(__('no_story_available_for_this_user'));
+//             }
+//        }
         $ad=Ad::where('license_number' , $request->license_number)->exists();
         if($ad){
             $ad_first=Ad::where('license_number' , $request->license_number)->first();
