@@ -19,9 +19,12 @@ class ChatController extends Controller
     {
         $chats = Chat::latest()->wherehas('receiver')->wherehas('sender')->where(function($q){
             $q->where('user_id' , auth()->id())->orWhere('receiver_id' , auth()->id());
-        } )->with('messages')->paginate(15);
-        // dd($chats, auth()->id());
-            
+        } )->with('messages')
+            ->withcount(['messages as count_unread'=>function ($q){
+            $q->where('is_read' , 0);
+        }])
+            ->paginate(15);
+
         $data = (new ChatCollection($chats))->toArray('');
 
         return response()->json([
@@ -37,7 +40,6 @@ class ChatController extends Controller
         $messageData = $request->validate([
             'receiver_id'   => ['required', 'exists:users,id'],
             'message'   => ['required'],
-//            'chat_id'   => 'nullable|exists:chats,id'
         ]);
 
         if(auth('api')->id() == $request->receiver_id)
@@ -76,19 +78,22 @@ class ChatController extends Controller
 
     public function show($receiver_id)
     {
-        $chat = Chat::where([['user_id' , '=' , auth()->id()],['receiver_id' , '=' , $receiver_id]])->orWhere([['receiver_id' , '=' , auth()->id()],['user_id' , '=' , $receiver_id]])->
-        orWhere([
+        $chat = Chat::where([['user_id' , '=' , auth()->id()],['receiver_id' , '=' , $receiver_id]])
+            ->orWhere([['receiver_id' , '=' , auth()->id()],['user_id' , '=' , $receiver_id]])
+            ->orWhere([
             ['id' , $receiver_id],
             ['receiver_id' , auth()->id()],
             ['title' , '!=', null]
 
         ])
             ->first();
+        $messages=$chat->messages;
+        $chat->messages()->update(['is_read' => 1]);
 
-        if(!$chat)
+        if(!$chat || !$messages)
             return $this->successResponse(data:[]);
 
 
-        return $this->successResponse(data:MessageResource::collection($chat->messages));
+        return $this->successResponse(data:MessageResource::collection($messages));
     }
 }

@@ -16,7 +16,8 @@ class MessageResource extends JsonResource
     {
         return [
             'sender_id'=>$this->sender_id,
-            'message'=>$this->message
+            'message'=>$this->message,
+            'is_read'=>$this->is_read
         ];
     }
 }
