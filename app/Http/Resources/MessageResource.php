@@ -17,7 +17,8 @@ class MessageResource extends JsonResource
         return [
             'sender_id'=>$this->sender_id,
             'message'=>$this->message,
-            'is_read'=>$this->is_read
+            'is_read'=>$this->is_read,
+            'date'=>$this->created_at?$this->created_at->diffForHumans():'',
         ];
     }
 }
